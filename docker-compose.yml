@@ -1,10 +1,10 @@
 services:
   db:
-    image: postgres:15
+    image: postgres:18-alpine
     container_name: postgres_db
     environment:
       POSTGRES_DB: clinica_fisio
-      POSTGRES_USER: postgres
+      POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
     ports:
       - "5432:5432"
@@ -18,7 +18,7 @@ services:
       - db
     environment:
       SPRING_DATASOURCE_URL: JDBC:postgresql://db:5432/clinica_fisio
-      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: admin
 
   frontend:
