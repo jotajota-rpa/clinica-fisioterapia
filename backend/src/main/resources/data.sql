@@ -1,3 +1,0 @@
-INSERT INTO ajustes_clinica (id, nombre_comercial, cif_nif, direccion, telefono, email, logo_url, serie_facturacion)
-VALUES (1, 'Clínica JotaJota', 'B12345678', 'Calle Fisioterapia 123', '954000000', 'info@jotajota.com', 'https://logo.png', 'F')
-ON CONFLICT (id) DO NOTHING;

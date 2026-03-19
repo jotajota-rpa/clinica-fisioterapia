@@ -17,7 +17,6 @@ import lombok.Setter;
 public class AjustesClinica {
 
     @Id
-    @Setter(AccessLevel.NONE)
     private int id = 1;
 
     @Size(max = 100)
@@ -41,7 +40,7 @@ public class AjustesClinica {
     @Column(name = "logo_url")
     private String logoUrl;
 
-    @Size(max = 5)
+    @Size(max = 20)
     @Column(name = "serie_facturacion")
-    private String serieFacturacion = "F";
+    private String serieFacturacion = "F26";
 }
