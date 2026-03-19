@@ -1,0 +1,188 @@
+CREATE SCHEMA IF NOT EXISTS "public";
+
+CREATE TABLE "public"."ajustes_clinica" (
+    "id" int PRIMARY KEY DEFAULT 1, 
+    "nombre_comercial" varchar(100) NOT NULL,
+    "cif_nif" varchar(20) NOT NULL,
+    "direccion" varchar(255),
+    "telefono" varchar(20),
+    "email" varchar(100),
+    "logo_url" varchar(500),
+    "serie_facturacion" varchar(5) DEFAULT 'F',
+    CONSTRAINT "solo_una_fila" CHECK (id = 1)
+);
+
+CREATE TABLE "public"."servicios" (
+    "id" bigserial NOT NULL,
+    "nombre" varchar(100) NOT NULL,
+    "descripcion" text,
+    "duracion_minutos" int NOT NULL,
+    "precio" numeric(10, 2) NOT NULL,
+    "iva_porcentaje" numeric(5, 2) NOT NULL DEFAULT 0.00,
+    "activo" boolean NOT NULL DEFAULT true,
+    "borrado_at" timestamp DEFAULT null,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "public"."pacientes" (
+    "id" bigserial NOT NULL,
+    "tipo_documento" varchar(10) NOT NULL,
+    "num_documento" varchar(20) NOT NULL UNIQUE,
+    "nombre" varchar(50) NOT NULL,
+    "apellidos" varchar(100) NOT NULL,
+    "fecha_nacimiento" date NOT NULL,
+    "email" varchar(100) NOT NULL,
+    "telefono" varchar(20) NOT NULL,
+    "observaciones" text NOT NULL,
+    "activo" boolean NOT NULL DEFAULT true,
+    "borrado_at" timestamp DEFAULT null,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "public"."detalles_facturas" (
+    "id" bigserial NOT NULL,
+    "id_factura" bigint NOT NULL,
+    "id_cita" bigint,
+    "id_producto" bigint,
+    "concepto" varchar(255) NOT NULL,
+    "cantidad" int NOT NULL,
+    "precio_unitario" numeric(10, 2) NOT NULL,
+    "iva_porcentaje" numeric(5, 2) NOT NULL,
+    "activo" boolean NOT NULL DEFAULT true,
+    "borrado_at" timestamp DEFAULT null,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "public"."documentos_adjuntos" (
+    "id" bigserial NOT NULL,
+    "id_paciente" bigint NOT NULL,
+    "id_cita" bigint NOT NULL,
+    "nombre_archivo" varchar(255) NOT NULL,
+    "url_archivo" varchar(500) NOT NULL,
+    "tipo_archivo" varchar(50) NOT NULL,
+    "fecha_subida" timestamp NOT NULL,
+    "activo" boolean NOT NULL DEFAULT true,
+    "borrado_at" timestamp DEFAULT null,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "public"."facturas" (
+    "id" bigserial NOT NULL,
+    "num_factura" varchar(20) NOT NULL UNIQUE,
+    "id_paciente" bigint NOT NULL,
+    "id_metodo_pago" bigint NOT NULL,
+    "fecha_emision" timestamp NOT NULL DEFAULT now(),
+    "base_imponible" numeric(10, 2) NOT NULL,
+    "total_iva" numeric(10, 2) NOT NULL,
+    "total" numeric(10, 2) NOT NULL,
+    "estado" varchar(20) NOT NULL DEFAULT 'PAGADA',
+    "activo" boolean NOT NULL DEFAULT true,
+    "borrado_at" timestamp DEFAULT null,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "public"."citas" (
+    "id" bigserial NOT NULL,
+    "id_personal" bigint NOT NULL,
+    "id_paciente" bigint NOT NULL,
+    "id_servicio" bigint NOT NULL,
+    "precio_aplicado" numeric(10, 2) NOT NULL,
+    "fecha_hora" timestamp NOT NULL,
+    "motivo" varchar(255) NOT NULL,
+    "estado" varchar(20) NOT NULL,
+    "activo" boolean NOT NULL DEFAULT true,
+    "borrado_at" timestamp DEFAULT null,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "public"."categorias_personal" (
+    "id" bigserial PRIMARY KEY,
+    "nombre" varchar(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE "public".personal(
+    "id" bigserial NOT NULL,
+    "id_categoria" bigint NOT NULL,
+    "num_colegiado" varchar(9) NOT NULL UNIQUE,
+    "tipo_documento" varchar(10) NOT NULL,
+    "num_documento" varchar(20) NOT NULL UNIQUE,
+    "nombre" varchar(50) NOT NULL,
+    "apellidos" varchar(100) NOT NULL,
+    "especialidad" varchar(100) NOT NULL,
+    "telefono" varchar(20) NOT NULL,
+    "activo" boolean NOT NULL DEFAULT true,
+    "borrado_at" timestamp DEFAULT null,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "public"."roles" (
+    "id" bigserial NOT NULL,
+    "nombre" varchar(20) NOT NULL,
+    "descripcion" varchar(100) NOT NULL,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "public"."usuarios" (
+    "id" bigserial NOT NULL,
+    "id_rol" bigint NOT NULL,
+    "id_personal" bigint UNIQUE,
+    "username" varchar(30) NOT NULL,
+    "password" varchar(255) NOT NULL,
+    "email" varchar(100) NOT NULL UNIQUE,
+    "activo" boolean NOT NULL DEFAULT true,
+    "borrado_at" timestamp DEFAULT null,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "public"."productos" (
+    "id" bigserial NOT NULL,
+    "nombre" varchar(100) NOT NULL,
+    "descripcion" varchar(100) NOT NULL,
+    "precio_venta" numeric(10, 2) NOT NULL,
+    "stock_actual" int NOT NULL,
+    "iva_porcentaje" numeric(5, 2) NOT NULL DEFAULT 21.00,
+    "url_imagen" varchar(500),
+    "activo" boolean NOT NULL DEFAULT true,
+    "borrado_at" timestamp DEFAULT null,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE "public"."metodos_pago" (
+    "id" bigserial PRIMARY KEY,
+    "nombre" varchar(50) NOT NULL UNIQUE, 
+    "descripcion" varchar(100),
+    "activo" boolean NOT NULL DEFAULT true
+);
+
+CREATE TABLE "public"."historial_clinico" (
+    "id" bigserial PRIMARY KEY,
+    "id_paciente" bigint NOT NULL,
+    "id_personal" bigint NOT NULL,
+    "id_cita" bigint, 
+    "fecha" timestamp NOT NULL DEFAULT now(),
+    "subjetivo" text, 
+    "objetivo" text, 
+    "plan_tratamiento" text, 
+    "activo" boolean DEFAULT true,
+    "borrado_at" timestamp DEFAULT null
+);
+
+
+-- Foreign key constraints
+-- Schema: public
+ALTER TABLE "public"."personal" ADD CONSTRAINT "fk_personal_id_categoria_categorias_personal_id" FOREIGN KEY("id_categoria") REFERENCES "public"."categorias_personal"("id");
+ALTER TABLE "public"."facturas" ADD CONSTRAINT "fk_facturas_id_metodo_pago_metodos_pago_id" FOREIGN KEY("id_metodo_pago") REFERENCES "public"."metodos_pago"("id");
+ALTER TABLE "public"."facturas" ADD CONSTRAINT "fk_facturas_id_paciente_pacientes_id" FOREIGN KEY("id_paciente") REFERENCES "public"."pacientes"("id");
+ALTER TABLE "public"."documentos_adjuntos" ADD CONSTRAINT "fk_documentos_adjuntos_id_citas_citas_id" FOREIGN KEY("id_cita") REFERENCES "public"."citas"("id");
+ALTER TABLE "public"."documentos_adjuntos" ADD CONSTRAINT "fk_documentos_adjuntos_id_paciente_pacientes_id" FOREIGN KEY("id_paciente") REFERENCES "public"."pacientes"("id");
+ALTER TABLE "public"."detalles_facturas" ADD CONSTRAINT "fk_detalles_facturas_id_producto_productos_id" FOREIGN KEY("id_producto") REFERENCES "public"."productos"("id");
+ALTER TABLE "public"."detalles_facturas" ADD CONSTRAINT "fk_detalles_facturas_id_cita_citas_id" FOREIGN KEY("id_cita") REFERENCES "public"."citas"("id");
+ALTER TABLE "public"."detalles_facturas" ADD CONSTRAINT "fk_detalles_facturas_id_factura_facturas_id" FOREIGN KEY("id_factura") REFERENCES "public"."facturas"("id");
+ALTER TABLE "public"."usuarios" ADD CONSTRAINT "fk_usuarios_id_personal_personal_id" FOREIGN KEY("id_personal") REFERENCES "public".personal("id");
+ALTER TABLE "public"."usuarios" ADD CONSTRAINT "fk_usuarios_id_rol_roles_id" FOREIGN KEY("id_rol") REFERENCES "public"."roles"("id");
+ALTER TABLE "public"."citas" ADD CONSTRAINT "fk_citas_id_personal_personal_id" FOREIGN KEY("id_personal") REFERENCES "public".personal("id");
+ALTER TABLE "public"."citas" ADD CONSTRAINT "fk_citas_id_paciente_pacientes_id" FOREIGN KEY("id_paciente") REFERENCES "public"."pacientes"("id");
+ALTER TABLE "public"."citas" ADD CONSTRAINT "fk_citas_id_servicios_servicios_id" FOREIGN KEY("id_servicio") REFERENCES "public"."servicios"("id");
+ALTER TABLE "public"."historial_clinico" ADD CONSTRAINT "fk_historial_clinico_id_paciente_pacientes_id" FOREIGN KEY ("id_paciente") REFERENCES "public"."pacientes"("id");
+ALTER TABLE "public"."historial_clinico" ADD CONSTRAINT "fk_historial_clinico_id_personal_personal_id" FOREIGN KEY ("id_personal") REFERENCES "public".personal("id");
+ALTER TABLE "public"."historial_clinico" ADD CONSTRAINT "fk_historial_clinico_id_cita_citas_id" FOREIGN KEY ("id_cita") REFERENCES "public"."citas"("id");

@@ -1,0 +1,175 @@
+@startuml
+!theme plain
+hide circle
+skinparam linetype ortho
+skinparam shadowing false
+
+entity "public.ajustes_clinica" as ajustes {
+  * id : int <<PK>>
+  --
+  nombre_comercial : varchar(100)
+  cif_nif : varchar(20)
+  direccion : varchar(255)
+  telefono : varchar(20)
+  email : varchar(100)
+  logo_url : varchar(500)
+  serie_facturacion : varchar(5)
+}
+
+entity "public.categorias_personal" as cats {
+  * id : bigserial <<PK>>
+  --
+  nombre : varchar(50)
+}
+
+entity "public.personal" as personal {
+  * id : bigserial <<PK>>
+  --
+  id_categoria : bigint <<FK>>
+  num_colegiado : varchar(9)
+  tipo_documento : varchar(10)
+  num_documento : varchar(20)
+  nombre : varchar(50)
+  apellidos : varchar(100)
+  especialidad : varchar(100)
+  telefono : varchar(20)
+  activo : boolean
+  borrado_at : timestamp
+}
+
+entity "public.pacientes" as pacientes {
+  * id : bigserial <<PK>>
+  --
+  tipo_documento : varchar(10)
+  num_documento : varchar(20)
+  nombre : varchar(50)
+  apellidos : varchar(100)
+  fecha_nacimiento : date
+  email : varchar(100)
+  telefono : varchar(20)
+  observaciones : text
+  activo : boolean
+  borrado_at : timestamp
+}
+
+entity "public.servicios" as servicios {
+  * id : bigserial <<PK>>
+  --
+  nombre : varchar(100)
+  precio : numeric(10,2)
+  iva_porcentaje : numeric(5,2)
+  duracion_minutos : int
+  activo : boolean
+}
+
+entity "public.citas" as citas {
+  * id : bigserial <<PK>>
+  --
+  id_personal : bigint <<FK>>
+  id_paciente : bigint <<FK>>
+  id_servicio : bigint <<FK>>
+  precio_aplicado : numeric(10,2)
+  fecha_hora : timestamp
+  motivo : varchar(255)
+  estado : varchar(20)
+}
+
+entity "public.facturas" as facturas {
+  * id : bigserial <<PK>>
+  --
+  num_factura : varchar(20)
+  id_paciente : bigint <<FK>>
+  id_metodo_pago : bigint <<FK>>
+  fecha_emision : timestamp
+  base_imponible : numeric(10,2)
+  total_iva : numeric(10,2)
+  total : numeric(10,2)
+  estado : varchar(20)
+}
+
+entity "public.detalles_facturas" as detalles {
+  * id : bigserial <<PK>>
+  --
+  id_factura : bigint <<FK>>
+  id_cita : bigint <<FK>>
+  id_producto : bigint <<FK>>
+  concepto : varchar(255)
+  cantidad : int
+  precio_unitario : numeric(10,2)
+  iva_porcentaje : numeric(5,2)
+}
+
+entity "public.productos" as productos {
+  * id : bigserial <<PK>>
+  --
+  nombre : varchar(100)
+  precio_venta : numeric(10,2)
+  stock_actual : int
+  iva_porcentaje : numeric(5,2)
+}
+
+entity "public.usuarios" as usuarios {
+  * id : bigserial <<PK>>
+  --
+  id_rol : bigint <<FK>>
+  id_personal : bigint <<FK>> <<unique>>
+  username : varchar(30)
+  password : varchar(255)
+  email : varchar(100)
+}
+
+entity "public.roles" as roles {
+  * id : bigserial <<PK>>
+  --
+  nombre : varchar(20)
+}
+
+entity "public.metodos_pago" as metodos {
+  * id : bigserial <<PK>>
+  --
+  nombre : varchar(50)
+}
+
+entity "public.historial_clinico" as historial {
+  * id : bigserial <<PK>>
+  --
+  id_paciente : bigint <<FK>>
+  id_personal : bigint <<FK>>
+  id_cita : bigint <<FK>>
+  subjetivo : text
+  objetivo : text
+  plan_tratamiento : text
+}
+
+entity "public.documentos_adjuntos" as documentos {
+  * id : bigserial <<PK>>
+  --
+  id_paciente : bigint <<FK>>
+  id_cita : bigint <<FK>>
+  nombre_archivo : varchar(255)
+  url_archivo : varchar(500)
+}
+
+' --- RELACIONES ---
+cats ||..o{ personal : "clasifica"
+personal ||..o| usuarios : "tiene cuenta"
+personal ||..o{ citas : "atiende"
+personal ||..o{ historial : "registra"
+
+pacientes ||..o{ citas : "reserva"
+pacientes ||..o{ facturas : "paga"
+pacientes ||..o{ historial : "tiene"
+pacientes ||..o{ documentos : "aporta"
+
+roles ||..o{ usuarios : "asigna"
+metodos ||..o{ facturas : "paga con"
+servicios ||..o{ citas : "define"
+
+facturas ||..o{ detalles : "contiene"
+citas ||..o| detalles : "se factura"
+productos ||..o{ detalles : "se vende"
+
+citas ||..o| historial : "genera"
+citas ||..o{ documentos : "adjunta"
+
+@enduml
