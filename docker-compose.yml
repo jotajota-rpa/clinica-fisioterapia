@@ -17,12 +17,19 @@ services:
     depends_on:
       - db
     environment:
-      SPRING_DATASOURCE_URL: JDBC:postgresql://db:5432/clinica_fisio
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/clinica_fisio
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: admin
+    volumes:
+      - ./backend:/app
+    command: ./mvnw spring-boot:run
 
   frontend:
     build: ./frontend
-    container_name: vite_frontend
+    container_name: react_frontend
     ports:
       - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev -- --host

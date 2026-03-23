@@ -34,7 +34,7 @@ public class AjustesClinicaServiceImpl implements IAjustesClinicaService{
         AjustesClinica ajustes = repository.findById(1).orElse(new AjustesClinica());
 
         ajustes.setId(1);
-        ajustes.setNombreComercial(dto.getNombreComercial());
+        ajustes.setNombre(dto.getNombre());
         ajustes.setCifNif(dto.getCifNif());
         ajustes.setDireccion(dto.getDireccion());
         ajustes.setTelefono(dto.getTelefono());

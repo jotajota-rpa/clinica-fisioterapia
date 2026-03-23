@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,8 +19,8 @@ public class AjustesClinica {
     private int id = 1;
 
     @Size(max = 100)
-    @Column(name = "nombre_comercial", nullable = false)
-    private String nombreComercial;
+    @Column(name = "nombre", nullable = false)
+    private String nombre;
 
     @Size(max = 20)
     @Column(name = "cif_nif", nullable = false)

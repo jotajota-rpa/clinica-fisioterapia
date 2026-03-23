@@ -13,7 +13,7 @@ entity "public.ajustes_clinica" as ajustes {
   telefono : varchar(20)
   email : varchar(100)
   logo_url : varchar(500)
-  serie_facturacion : varchar(5)
+  serie_facturacion : varchar(20)
 }
 
 entity "public.categorias_personal" as cats {

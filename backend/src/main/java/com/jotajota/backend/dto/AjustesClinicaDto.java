@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class AjustesClinicaDto {
 
-    private String nombreComercial;
+    private String nombre;
     private String cifNif;
     private String direccion;
     private String telefono;

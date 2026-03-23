@@ -8,7 +8,7 @@ CREATE TABLE "public"."ajustes_clinica" (
     "telefono" varchar(20),
     "email" varchar(100),
     "logo_url" varchar(500),
-    "serie_facturacion" varchar(5) DEFAULT 'F',
+    "serie_facturacion" varchar(20) DEFAULT 'F',
     CONSTRAINT "solo_una_fila" CHECK (id = 1)
 );
 
