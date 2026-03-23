@@ -8,6 +8,8 @@ services:
       POSTGRES_PASSWORD: admin
     ports:
       - "5432:5432"
+    mem_limit: 512m
+    cpus: 0.5
 
   backend:
     build: ./backend
@@ -20,9 +22,10 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/clinica_fisio
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: admin
-    volumes:
-      - ./backend:/app
-    command: ./mvnw spring-boot:run
+      JAVA_OPTS: "-Xms128m -Xmx512m"
+    mem_limit: 512m
+    cpus: 0.5
+    command: java -jar app.jar
 
   frontend:
     build: ./frontend
@@ -33,3 +36,5 @@ services:
       - ./frontend:/app
       - /app/node_modules
     command: npm run dev -- --host
+    mem_limit: 256m
+    cpus: 0.5
