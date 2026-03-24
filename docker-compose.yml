@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   db:
     image: postgres:18-alpine
@@ -12,12 +10,9 @@ services:
       - "5432:5432"
     command: postgres -c shared_buffers=64MB
     volumes:
-      - D:/Documentos/Proyectos/docker-data/data/pgdata:/var/lib/postgresql/18/docker
-    deploy:
-      resources:
-        limits:
-          cpus: 1
-          memory: 512m
+      - D:/Documentos/Proyectos/docker-data/data/pgdata:/var/lib/postgresql
+    mem_limit: 512m
+    cpus: 1
 
   backend:
     build: ./backend
@@ -31,15 +26,12 @@ services:
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: admin
       JAVA_OPTS: "-Xms128m -Xmx256m"
-    command: >
-      sh -c "./wait-for-it.sh db:5432 -- java -jar app.jar"
+    command: mvn spring-boot:run -Dspring-boot.run.fork=false
     volumes:
-      - D:/Documentos/Proyectos/docker-data/data/backend:/app/data
-    deploy:
-      resources:
-        limits:
-          cpus: 2
-          memory: 512m
+      - ./backend:/app
+      - /root/.m2
+    mem_limit: 512m
+    cpus: 2
 
   frontend:
     build: ./frontend
@@ -48,10 +40,9 @@ services:
       - "5173:5173"
     command: npm run dev -- --host
     volumes:
+      - ./frontend:/app
       - /app/node_modules
-      - D:/Documentos/Proyectos/docker-data/data/frontend:/app/data
-    deploy:
-      resources:
-        limits:
-          cpus: 1
-          memory: 512m
+    mem_limit: 512m
+    cpus: 1
+    environment:
+      - CHOKIDAR_USEPOLLING=true

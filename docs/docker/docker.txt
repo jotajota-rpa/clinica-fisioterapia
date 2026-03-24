@@ -1,0 +1,33 @@
+==============================
+DOCKER - COMANDOS MÁS USADOS
+==============================
+
+# 1️⃣ Construir y levantar tu proyecto
+cd D:/Documentos/Proyectos/tu-proyecto
+docker-compose build          # Construir imágenes
+docker-compose up -d          # Levantar contenedores en segundo plano
+docker-compose up             # Levantar y ver logs en tiempo real
+docker-compose logs -f        # Ver logs de todos los contenedores
+docker-compose down           # Parar todos los contenedores
+
+# 2️⃣ Ver estado y uso de recursos
+docker ps                     # Contenedores activos
+docker ps -a                  # Todos los contenedores
+docker stats                  # Uso de CPU/RAM de contenedores
+docker system df              # Espacio ocupado por Docker
+
+# 3️⃣ Limpiar espacio y basura sin tocar contenedores activos
+docker container prune        # Borrar contenedores parados
+docker image prune            # Borrar imágenes no usadas
+docker network prune          # Borrar redes no usadas
+docker system prune           # Limpieza general ligera
+
+# 4️⃣ Limpieza más agresiva (cuidado)
+docker system prune -a --volumes   # Borra todo lo no usado, incl. volúmenes
+
+# 5️⃣ Reset total (borrar todo) - solo si quieres empezar desde cero
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+docker rmi -f $(docker images -aq)
+docker volume rm $(docker volume ls -q)
+docker network prune -f
