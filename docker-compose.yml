@@ -13,6 +13,11 @@ services:
     command: postgres -c shared_buffers=64MB
     volumes:
       - D:/Documentos/Proyectos/docker-data/data/pgdata:/var/lib/postgresql/18/docker
+    deploy:
+      resources:
+        limits:
+          cpus: 1
+          memory: 512m
 
   backend:
     build: ./backend
@@ -30,6 +35,11 @@ services:
       sh -c "./wait-for-it.sh db:5432 -- java -jar app.jar"
     volumes:
       - D:/Documentos/Proyectos/docker-data/data/backend:/app/data
+    deploy:
+      resources:
+        limits:
+          cpus: 2
+          memory: 512m
 
   frontend:
     build: ./frontend
@@ -40,3 +50,8 @@ services:
     volumes:
       - /app/node_modules
       - D:/Documentos/Proyectos/docker-data/data/frontend:/app/data
+    deploy:
+      resources:
+        limits:
+          cpus: 1
+          memory: 512m
