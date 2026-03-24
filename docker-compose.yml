@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   db:
     image: postgres:18-alpine
@@ -10,7 +12,7 @@ services:
       - "5432:5432"
     command: postgres -c shared_buffers=64MB
     volumes:
-      - E:/Docker_Data/pgdata:/var/lib/postgresql/18/docker
+      - D:/Documentos/Proyectos/docker-data/data/pgdata:/var/lib/postgresql/18/docker
 
   backend:
     build: ./backend
@@ -27,7 +29,7 @@ services:
     command: >
       sh -c "./wait-for-it.sh db:5432 -- java -jar app.jar"
     volumes:
-      - E:/Docker_Data/backend:/app/data
+      - D:/Documentos/Proyectos/docker-data/data/backend:/app/data
 
   frontend:
     build: ./frontend
@@ -37,4 +39,4 @@ services:
     command: npm run dev -- --host
     volumes:
       - /app/node_modules
-      - E:/Docker_Data/frontend:/app/data
+      - D:/Documentos/Proyectos/docker-data/data/frontend:/app/data

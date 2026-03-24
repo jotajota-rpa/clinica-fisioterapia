@@ -1,0 +1,43 @@
+===========================================================
+     MI CHULETA DE GIT - FLUJO DE TRABAJO PROFESIONAL
+===========================================================
+
+1. ANTES DE EMPEZAR (Sincronizar mi PC con la nube)
+-----------------------------------------------------------
+git checkout main          # Ir a la rama principal
+git pull origin main       # Traer los cambios que haya en GitHub
+
+2. CREAR NUEVA TAREA (Ej: Conectar Axios)
+-----------------------------------------------------------
+# El nombre siempre con "feature/" y en minúsculas
+git checkout -b feature/nombre-de-la-tarea
+
+3. GUARDAR EL TRABAJO (Mientras programo)
+-----------------------------------------------------------
+git status                 # Ver qué archivos he cambiado
+git add .                  # Preparar TODOS los cambios
+git commit -m "feat: mensaje descriptivo de lo que hice"
+
+4. SUBIR A GITHUB (La primera vez de esta rama)
+-----------------------------------------------------------
+# Esto crea la rama en GitHub automáticamente
+git push -u origin feature/nombre-de-la-tarea
+
+*Nota: Las siguientes veces en la misma rama, solo haz 'git push'*
+
+5. TERMINAR Y FUSIONAR (Cuando todo funciona)
+-----------------------------------------------------------
+git checkout main          # Volver a la rama principal
+git merge feature/nombre-de-la-tarea   # Mezclar los cambios
+git push origin main       # Subir la 'main' actualizada a GitHub
+
+6. LIMPIEZA (Opcional)
+-----------------------------------------------------------
+git branch -d feature/nombre-de-la-tarea  # Borrar rama en mi PC
+
+===========================================================
+ REGLAS DE ORO:
+ - NUNCA programes directo en 'main'.
+ - Haz commits pequeños y seguidos (es mejor que uno gigante).
+ - Si algo falla, 'git status' es tu mejor amigo.
+===========================================================
