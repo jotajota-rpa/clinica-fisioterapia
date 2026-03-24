@@ -8,8 +8,9 @@ services:
       POSTGRES_PASSWORD: admin
     ports:
       - "5432:5432"
-    mem_limit: 512m
-    cpus: 0.5
+    command: postgres -c shared_buffers=64MB
+    volumes:
+      - E:/Docker_Data/pgdata:/var/lib/postgresql/18/docker
 
   backend:
     build: ./backend
@@ -22,19 +23,18 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/clinica_fisio
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: admin
-      JAVA_OPTS: "-Xms128m -Xmx512m"
-    mem_limit: 512m
-    cpus: 0.5
-    command: java -jar app.jar
+      JAVA_OPTS: "-Xms128m -Xmx256m"
+    command: >
+      sh -c "./wait-for-it.sh db:5432 -- java -jar app.jar"
+    volumes:
+      - E:/Docker_Data/backend:/app/data
 
   frontend:
     build: ./frontend
     container_name: react_frontend
     ports:
       - "5173:5173"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
     command: npm run dev -- --host
-    mem_limit: 256m
-    cpus: 0.5
+    volumes:
+      - /app/node_modules
+      - E:/Docker_Data/frontend:/app/data
