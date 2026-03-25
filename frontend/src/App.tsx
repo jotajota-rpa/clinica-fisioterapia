@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import './App.css'
+import './index.css'
 import AjustesClinica from './pages/ajustes/AjustesClinica';
 
 function App() {
