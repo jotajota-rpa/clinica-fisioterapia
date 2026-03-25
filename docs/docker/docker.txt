@@ -31,3 +31,9 @@ docker rm $(docker ps -aq)
 docker rmi -f $(docker images -aq)
 docker volume rm $(docker volume ls -q)
 docker network prune -f
+
+# 6️⃣ Reconstruir contenedor frontend
+docker-compose stop frontend
+docker-compose rm -f frontend
+docker-compose up --build -d frontend
+docker-compose logs -f frontend

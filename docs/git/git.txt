@@ -35,9 +35,11 @@ git push origin main       # Subir la 'main' actualizada a GitHub
 -----------------------------------------------------------
 git branch -d feature/nombre-de-la-tarea  # Borrar rama en mi PC
 
-===========================================================
- REGLAS DE ORO:
- - NUNCA programes directo en 'main'.
- - Haz commits pequeños y seguidos (es mejor que uno gigante).
- - Si algo falla, 'git status' es tu mejor amigo.
+7. TRAER LO QUE HAY EN REMOTO AL LOCAL POR SI HAS HECHO ALGO QUE NO DEBIAS
+-----------------------------------------------------------
+git checkout main
+# Sincroniza epositorio local con el remoto
+git fetch origin
+# Fuerza a la rama local que sea igual a la del remoto
+git reset --hard origin/main
 ===========================================================
