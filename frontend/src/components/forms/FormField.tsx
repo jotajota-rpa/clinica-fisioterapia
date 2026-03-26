@@ -13,7 +13,7 @@ export const FormField = ({ label, error, helperText, ...props }: FormFieldProps
         <label className="block mb-2"> {label} </label>
       )}
 
-      <input {...props}
+      <input {...props} type="text"
         className={`w-full border rounded-lg p-2 focus:ring-2 transition-all duration-300 ease-in-out outline-none
             ${error ? 'border-red-400 focus:ring-red-500' : 'border-gray-400 focus:ring-green-500'}
         `}/>

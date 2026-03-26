@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/ajustes")
 public class AjustesClinicaRestController {
     @Autowired
@@ -27,7 +26,7 @@ public class AjustesClinicaRestController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/actualizar-datos")
+    @PutMapping("/save-or-update")
     public ResponseEntity<?> actualizar(@RequestBody AjustesClinicaDto dto) {
         try {
             boolean yaExistia = service.existeAjustes(1);
@@ -44,11 +43,11 @@ public class AjustesClinicaRestController {
         }
     }
 
-    @PostMapping(value = "/actualizar-logo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/update-logo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> subirLogo(@RequestParam(value = "archivo", required = false) MultipartFile archivo) {
         try {
             if (archivo == null || archivo.isEmpty()) {
-                return ResponseEntity.badRequest().body("No se ha seleccionado ningún archivo.");
+                return ResponseEntity.badRequest().body("No se ha deselection ningún archivo.");
             }
 
             String rutaImagen = service.guardarLogoEnDisco(archivo);
