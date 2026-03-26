@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface IAjustesClinicaService {
     Optional<AjustesClinica> obtenerAjustes();
-    String actualizarLogo(MultipartFile archivo) throws IOException;
-    AjustesClinica actualizarDatos(AjustesClinicaDto dto);
+    String guardarLogoEnDisco(MultipartFile archivo) throws IOException;
+    AjustesClinica insertarOactualizarDatos(AjustesClinicaDto dto);
+    boolean existeAjustes(int id);
 }

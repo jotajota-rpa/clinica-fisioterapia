@@ -10,5 +10,6 @@ public class AjustesClinicaDto {
     private String direccion;
     private String telefono;
     private String email;
+    private String logoUrl;
     private String serieFacturacion;
 }

@@ -4,6 +4,7 @@ import com.jotajota.backend.dto.AjustesClinicaDto;
 import com.jotajota.backend.entity.AjustesClinica;
 import com.jotajota.backend.service.IAjustesClinicaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,24 +30,33 @@ public class AjustesClinicaRestController {
     @PutMapping("/actualizar-datos")
     public ResponseEntity<?> actualizar(@RequestBody AjustesClinicaDto dto) {
         try {
-            AjustesClinica resultado = service.actualizarDatos(dto);
+            boolean yaExistia = service.existeAjustes(1);
+            AjustesClinica resultado = service.insertarOactualizarDatos(dto);
+
+            if (!yaExistia) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(resultado);
+            }
+
             return ResponseEntity.ok(resultado);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error: " + e.getMessage());
+            System.err.println("Error crítico guardando los datos: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No se pudo procesar los datos. Inténtelo de nuevo.");
         }
     }
 
     @PostMapping(value = "/actualizar-logo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> subirLogo(@RequestParam("archivo") MultipartFile archivo) {
+    public ResponseEntity<?> subirLogo(@RequestParam(value = "archivo", required = false) MultipartFile archivo) {
         try {
-            String rutaImagen = service.actualizarLogo(archivo);
+            if (archivo == null || archivo.isEmpty()) {
+                return ResponseEntity.badRequest().body("No se ha seleccionado ningún archivo.");
+            }
 
-            // Devolvemos un mensaje de éxito con la nueva ruta
+            String rutaImagen = service.guardarLogoEnDisco(archivo);
             return ResponseEntity.ok().body("Logo actualizado con éxito: " + rutaImagen);
 
         } catch (IOException e) {
-            // Si algo falla con el disco duro, avisamos
-            return ResponseEntity.internalServerError().body("Error al guardar el archivo: " + e.getMessage());
+            System.err.println("Error crítico guardando la imagén: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No se pudo procesar la imagén. Inténtelo de nuevo.");
         }
     }
 }

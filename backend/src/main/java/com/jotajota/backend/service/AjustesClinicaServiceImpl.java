@@ -5,6 +5,8 @@ import com.jotajota.backend.entity.AjustesClinica;
 import com.jotajota.backend.repository.IAjustesClinicaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,7 +32,7 @@ public class AjustesClinicaServiceImpl implements IAjustesClinicaService{
     }
 
     @Override
-    public AjustesClinica actualizarDatos(AjustesClinicaDto dto) {
+    public AjustesClinica insertarOactualizarDatos(AjustesClinicaDto dto) {
         AjustesClinica ajustes = repository.findById(1).orElse(new AjustesClinica());
 
         ajustes.setId(1);
@@ -45,24 +47,27 @@ public class AjustesClinicaServiceImpl implements IAjustesClinicaService{
     }
 
     @Override
-    public String actualizarLogo(MultipartFile archivo) throws IOException {
+    public String guardarLogoEnDisco(MultipartFile archivo) throws IOException {
         String nombreLogo = "logo.png";
-        // Obtenemos la ruta relativa
         Path rutaDestino = Paths.get(rootPath, "ajustes", "imagenes", nombreLogo);
 
-        // Traemos el unico registro que hay
-        AjustesClinica ajustes = repository.findById(1).orElseThrow(() -> new RuntimeException("No hay ajustes"));
-
-        // Se crea el directorio si no lo hay por defecto
-        // Copia la imagen a la carpeta sustituyendola si ya la hay
+        // Manejo físico del archivo
         Files.createDirectories(rutaDestino.getParent());
         Files.copy(archivo.getInputStream(), rutaDestino, StandardCopyOption.REPLACE_EXISTING);
 
-        // Guardamos la ruta en la bbdd
+        // Buscamos el registro, si no existe, lo creamos vacío solo con el ID y la URL
+        AjustesClinica ajustes = repository.findById(1).orElse(new AjustesClinica());
+        ajustes.setId(1);
         ajustes.setLogoUrl("ajustes/imagenes/" + nombreLogo);
+
         repository.save(ajustes);
 
         return ajustes.getLogoUrl();
+    }
+
+    @Override
+    public boolean existeAjustes(int id) {
+        return repository.existsById(id);
     }
 
 }
