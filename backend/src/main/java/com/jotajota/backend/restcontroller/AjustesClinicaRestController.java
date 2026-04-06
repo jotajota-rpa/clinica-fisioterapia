@@ -47,7 +47,7 @@ public class AjustesClinicaRestController {
     public ResponseEntity<?> subirLogo(@RequestParam(value = "archivo", required = false) MultipartFile archivo) {
         try {
             if (archivo == null || archivo.isEmpty()) {
-                return ResponseEntity.badRequest().body("No se ha deselection ningún archivo.");
+                return ResponseEntity.badRequest().body("No se ha seleccionado ningún archivo.");
             }
 
             String rutaImagen = service.guardarLogoEnDisco(archivo);
