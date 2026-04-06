@@ -1,0 +1,198 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' =========================
+' ENTIDADES
+' =========================
+
+class ajustes_clinica {
++id : int <<PK>>
+nombre_comercial : varchar
+cif_nif : varchar
+direccion : varchar
+telefono : varchar
+email : varchar
+logo_url : varchar
+serie_facturacion : varchar
+}
+
+class servicios {
++id : bigint <<PK>>
+nombre : varchar
+descripcion : text
+duracion_minutos : int
+precio : numeric
+iva_porcentaje : numeric
+activo : boolean
+borrado_at : timestamp
+}
+
+class pacientes {
++id : bigint <<PK>>
+tipo_documento : varchar
+num_documento : varchar <<UNIQUE>>
+nombre : varchar
+apellidos : varchar
+fecha_nacimiento : date
+email : varchar
+telefono : varchar
+observaciones : text
+activo : boolean
+borrado_at : timestamp
+}
+
+class categorias_personal {
++id : bigint <<PK>>
+nombre : varchar <<UNIQUE>>
+activo : boolean
+borrado_at : timestamp
+}
+
+class personal {
++id : bigint <<PK>>
+id_categoria : bigint <<FK>>
+num_colegiado : varchar <<UNIQUE>>
+tipo_documento : varchar
+num_documento : varchar <<UNIQUE>>
+nombre : varchar
+apellidos : varchar
+especialidad : varchar
+telefono : varchar
+activo : boolean
+borrado_at : timestamp
+}
+
+class roles {
++id : bigint <<PK>>
+nombre : varchar
+descripcion : varchar
+activo : boolean
+borrado_at : timestamp
+}
+
+class usuarios {
++id : bigint <<PK>>
+id_rol : bigint <<FK>>
+id_personal : bigint <<FK>>
+username : varchar
+password : varchar
+email : varchar <<UNIQUE>>
+activo : boolean
+borrado_at : timestamp
+}
+
+class citas {
++id : bigint <<PK>>
+id_personal : bigint <<FK>>
+id_paciente : bigint <<FK>>
+id_servicio : bigint <<FK>>
+precio_aplicado : numeric
+fecha_hora : timestamp
+motivo : varchar
+estado : varchar
+activo : boolean
+borrado_at : timestamp
+}
+
+class productos {
++id : bigint <<PK>>
+nombre : varchar
+descripcion : varchar
+precio_venta : numeric
+stock_actual : int
+iva_porcentaje : numeric
+url_imagen : varchar
+activo : boolean
+borrado_at : timestamp
+}
+
+class metodos_pago {
++id : bigint <<PK>>
+nombre : varchar <<UNIQUE>>
+descripcion : varchar
+activo : boolean
+borrado_at : timestamp
+}
+
+class facturas {
++id : bigint <<PK>>
+num_factura : varchar <<UNIQUE>>
+id_paciente : bigint <<FK>>
+id_metodo_pago : bigint <<FK>>
+fecha_emision : timestamp
+base_imponible : numeric
+total_iva : numeric
+total : numeric
+estado : varchar
+activo : boolean
+borrado_at : timestamp
+}
+
+class detalles_facturas {
++id : bigint <<PK>>
+id_factura : bigint <<FK>>
+id_cita : bigint <<FK>>
+id_producto : bigint <<FK>>
+concepto : varchar
+cantidad : int
+precio_unitario : numeric
+iva_porcentaje : numeric
+activo : boolean
+borrado_at : timestamp
+}
+
+class documentos_adjuntos {
++id : bigint <<PK>>
+id_paciente : bigint <<FK>>
+id_cita : bigint <<FK>>
+nombre_archivo : varchar
+url_archivo : varchar
+tipo_archivo : varchar
+fecha_subida : timestamp
+activo : boolean
+borrado_at : timestamp
+}
+
+class historial_clinico {
++id : bigint <<PK>>
+id_paciente : bigint <<FK>>
+id_personal : bigint <<FK>>
+id_cita : bigint <<FK>>
+fecha : timestamp
+subjetivo : text
+objetivo : text
+plan_tratamiento : text
+activo : boolean
+borrado_at : timestamp
+}
+
+' =========================
+' RELACIONES (CARDINALIDAD)
+' =========================
+
+categorias_personal "1" --> "0..*" personal : clasifica
+
+roles "1" --> "0..*" usuarios : asigna
+personal "1" --> "0..1" usuarios : tiene
+
+pacientes "1" --> "0..*" citas : agenda
+personal "1" --> "0..*" citas : atiende
+servicios "1" --> "0..*" citas : se_aplica_en
+
+pacientes "1" --> "0..*" facturas : factura_a
+metodos_pago "1" --> "0..*" facturas : se_utiliza_en
+
+facturas "1" --> "1..*" detalles_facturas : contiene
+productos "1" --> "0..*" detalles_facturas : se_vende_en
+citas "1" --> "0..*" detalles_facturas : se_factura_en
+
+pacientes "1" --> "0..*" documentos_adjuntos : tiene
+citas "1" --> "0..*" documentos_adjuntos : genera
+
+pacientes "1" --> "0..*" historial_clinico : tiene
+personal "1" --> "0..*" historial_clinico : registra
+citas "1" --> "0..*" historial_clinico : origina
+
+
+@enduml
+

@@ -13,7 +13,7 @@ CREATE TABLE "public"."ajustes_clinica" (
 );
 
 CREATE TABLE "public"."servicios" (
-    "id" bigserial NOT NULL,
+    "id" bigserial PRIMARY KEY,
     "nombre" varchar(100) NOT NULL,
     "descripcion" text,
     "duracion_minutos" int NOT NULL,
@@ -21,11 +21,10 @@ CREATE TABLE "public"."servicios" (
     "iva_porcentaje" numeric(5, 2) NOT NULL DEFAULT 0.00,
     "activo" boolean NOT NULL DEFAULT true,
     "borrado_at" timestamp DEFAULT null,
-    PRIMARY KEY ("id")
 );
 
 CREATE TABLE "public"."pacientes" (
-    "id" bigserial NOT NULL,
+    "id" bigserial PRIMARY KEY,
     "tipo_documento" varchar(10) NOT NULL,
     "num_documento" varchar(20) NOT NULL UNIQUE,
     "nombre" varchar(50) NOT NULL,
@@ -36,11 +35,10 @@ CREATE TABLE "public"."pacientes" (
     "observaciones" text NOT NULL,
     "activo" boolean NOT NULL DEFAULT true,
     "borrado_at" timestamp DEFAULT null,
-    PRIMARY KEY ("id")
 );
 
 CREATE TABLE "public"."detalles_facturas" (
-    "id" bigserial NOT NULL,
+    "id" bigserial PRIMARY KEY,
     "id_factura" bigint NOT NULL,
     "id_cita" bigint,
     "id_producto" bigint,
@@ -50,11 +48,10 @@ CREATE TABLE "public"."detalles_facturas" (
     "iva_porcentaje" numeric(5, 2) NOT NULL,
     "activo" boolean NOT NULL DEFAULT true,
     "borrado_at" timestamp DEFAULT null,
-    PRIMARY KEY ("id")
 );
 
 CREATE TABLE "public"."documentos_adjuntos" (
-    "id" bigserial NOT NULL,
+    "id" bigserial PRIMARY KEY,
     "id_paciente" bigint NOT NULL,
     "id_cita" bigint NOT NULL,
     "nombre_archivo" varchar(255) NOT NULL,
@@ -63,11 +60,10 @@ CREATE TABLE "public"."documentos_adjuntos" (
     "fecha_subida" timestamp NOT NULL,
     "activo" boolean NOT NULL DEFAULT true,
     "borrado_at" timestamp DEFAULT null,
-    PRIMARY KEY ("id")
 );
 
 CREATE TABLE "public"."facturas" (
-    "id" bigserial NOT NULL,
+    "id" bigserial PRIMARY KEY,
     "num_factura" varchar(20) NOT NULL UNIQUE,
     "id_paciente" bigint NOT NULL,
     "id_metodo_pago" bigint NOT NULL,
@@ -78,11 +74,10 @@ CREATE TABLE "public"."facturas" (
     "estado" varchar(20) NOT NULL DEFAULT 'PAGADA',
     "activo" boolean NOT NULL DEFAULT true,
     "borrado_at" timestamp DEFAULT null,
-    PRIMARY KEY ("id")
 );
 
 CREATE TABLE "public"."citas" (
-    "id" bigserial NOT NULL,
+    "id" bigserial PRIMARY KEY,
     "id_personal" bigint NOT NULL,
     "id_paciente" bigint NOT NULL,
     "id_servicio" bigint NOT NULL,
@@ -92,16 +87,17 @@ CREATE TABLE "public"."citas" (
     "estado" varchar(20) NOT NULL,
     "activo" boolean NOT NULL DEFAULT true,
     "borrado_at" timestamp DEFAULT null,
-    PRIMARY KEY ("id")
 );
 
 CREATE TABLE "public"."categorias_personal" (
     "id" bigserial PRIMARY KEY,
-    "nombre" varchar(50) NOT NULL UNIQUE
+    "nombre" varchar(50) NOT NULL UNIQUE,
+    "activo" boolean DEFAULT true,
+    "borrado_at" timestamp DEFAULT null
 );
 
 CREATE TABLE "public".personal(
-    "id" bigserial NOT NULL,
+    "id" bigserial PRIMARY KEY,
     "id_categoria" bigint NOT NULL,
     "num_colegiado" varchar(9) NOT NULL UNIQUE,
     "tipo_documento" varchar(10) NOT NULL,
@@ -112,18 +108,18 @@ CREATE TABLE "public".personal(
     "telefono" varchar(20) NOT NULL,
     "activo" boolean NOT NULL DEFAULT true,
     "borrado_at" timestamp DEFAULT null,
-    PRIMARY KEY ("id")
 );
 
 CREATE TABLE "public"."roles" (
-    "id" bigserial NOT NULL,
+    "id" bigserial PRIMARY KEY,
     "nombre" varchar(20) NOT NULL,
     "descripcion" varchar(100) NOT NULL,
-    PRIMARY KEY ("id")
+    "activo" boolean DEFAULT true,
+    "borrado_at" timestamp DEFAULT null
 );
 
 CREATE TABLE "public"."usuarios" (
-    "id" bigserial NOT NULL,
+    "id" bigserial PRIMARY KEY,
     "id_rol" bigint NOT NULL,
     "id_personal" bigint UNIQUE,
     "username" varchar(30) NOT NULL,
@@ -131,11 +127,10 @@ CREATE TABLE "public"."usuarios" (
     "email" varchar(100) NOT NULL UNIQUE,
     "activo" boolean NOT NULL DEFAULT true,
     "borrado_at" timestamp DEFAULT null,
-    PRIMARY KEY ("id")
 );
 
 CREATE TABLE "public"."productos" (
-    "id" bigserial NOT NULL,
+    "id" bigserial PRIMARY KEY,
     "nombre" varchar(100) NOT NULL,
     "descripcion" varchar(100) NOT NULL,
     "precio_venta" numeric(10, 2) NOT NULL,
@@ -144,14 +139,16 @@ CREATE TABLE "public"."productos" (
     "url_imagen" varchar(500),
     "activo" boolean NOT NULL DEFAULT true,
     "borrado_at" timestamp DEFAULT null,
-    PRIMARY KEY ("id")
 );
 
 CREATE TABLE "public"."metodos_pago" (
     "id" bigserial PRIMARY KEY,
     "nombre" varchar(50) NOT NULL UNIQUE, 
     "descripcion" varchar(100),
-    "activo" boolean NOT NULL DEFAULT true
+    "activo" boolean NOT NULL DEFAULT true,
+    "activo" boolean DEFAULT true,
+    "borrado_at" timestamp DEFAULT null
+
 );
 
 CREATE TABLE "public"."historial_clinico" (
