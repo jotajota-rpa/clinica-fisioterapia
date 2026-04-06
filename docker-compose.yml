@@ -27,6 +27,8 @@ services:
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin
       - JWT_SECRET=${JWT_SECRET:-ClinicaFisio2026FullStackSpringReactSecurityKeySafeDevelopment!!}
+      - JWT_EXPIRATION=${JWT_EXPIRATION:-86400000}
+      - JWT_REFRESH_TOKEN_EXPIRATION=${JWT_REFRESH_TOKEN_EXPIRATION:-604800000}
       - JAVA_OPTS=-Xms128m -Xmx256m
     command: mvn spring-boot:run -Dspring-boot.run.fork=false
     volumes:
