@@ -20,7 +20,7 @@ CREATE TABLE "public"."servicios" (
     "precio" numeric(10, 2) NOT NULL,
     "iva_porcentaje" numeric(5, 2) NOT NULL DEFAULT 0.00,
     "activo" boolean NOT NULL DEFAULT true,
-    "borrado_at" timestamp DEFAULT null,
+    "borrado_at" timestamp DEFAULT null
 );
 
 CREATE TABLE "public"."pacientes" (
@@ -34,7 +34,7 @@ CREATE TABLE "public"."pacientes" (
     "telefono" varchar(20) NOT NULL,
     "observaciones" text NOT NULL,
     "activo" boolean NOT NULL DEFAULT true,
-    "borrado_at" timestamp DEFAULT null,
+    "borrado_at" timestamp DEFAULT null
 );
 
 CREATE TABLE "public"."detalles_facturas" (
@@ -47,7 +47,7 @@ CREATE TABLE "public"."detalles_facturas" (
     "precio_unitario" numeric(10, 2) NOT NULL,
     "iva_porcentaje" numeric(5, 2) NOT NULL,
     "activo" boolean NOT NULL DEFAULT true,
-    "borrado_at" timestamp DEFAULT null,
+    "borrado_at" timestamp DEFAULT null
 );
 
 CREATE TABLE "public"."documentos_adjuntos" (
@@ -59,7 +59,7 @@ CREATE TABLE "public"."documentos_adjuntos" (
     "tipo_archivo" varchar(50) NOT NULL,
     "fecha_subida" timestamp NOT NULL,
     "activo" boolean NOT NULL DEFAULT true,
-    "borrado_at" timestamp DEFAULT null,
+    "borrado_at" timestamp DEFAULT null
 );
 
 CREATE TABLE "public"."facturas" (
@@ -73,7 +73,7 @@ CREATE TABLE "public"."facturas" (
     "total" numeric(10, 2) NOT NULL,
     "estado" varchar(20) NOT NULL DEFAULT 'PAGADA',
     "activo" boolean NOT NULL DEFAULT true,
-    "borrado_at" timestamp DEFAULT null,
+    "borrado_at" timestamp DEFAULT null
 );
 
 CREATE TABLE "public"."citas" (
@@ -86,7 +86,7 @@ CREATE TABLE "public"."citas" (
     "motivo" varchar(255) NOT NULL,
     "estado" varchar(20) NOT NULL,
     "activo" boolean NOT NULL DEFAULT true,
-    "borrado_at" timestamp DEFAULT null,
+    "borrado_at" timestamp DEFAULT null
 );
 
 CREATE TABLE "public"."categorias_personal" (
@@ -107,7 +107,7 @@ CREATE TABLE "public".personal(
     "especialidad" varchar(100) NOT NULL,
     "telefono" varchar(20) NOT NULL,
     "activo" boolean NOT NULL DEFAULT true,
-    "borrado_at" timestamp DEFAULT null,
+    "borrado_at" timestamp DEFAULT null
 );
 
 CREATE TABLE "public"."roles" (
@@ -146,9 +146,7 @@ CREATE TABLE "public"."metodos_pago" (
     "nombre" varchar(50) NOT NULL UNIQUE, 
     "descripcion" varchar(100),
     "activo" boolean NOT NULL DEFAULT true,
-    "activo" boolean DEFAULT true,
     "borrado_at" timestamp DEFAULT null
-
 );
 
 CREATE TABLE "public"."historial_clinico" (
