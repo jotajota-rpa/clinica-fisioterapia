@@ -1,6 +1,6 @@
-package com.jotajota.backend.repository;
+package com.clinica.backend.repository;
 
-import com.jotajota.backend.entity.AjustesClinica;
+import com.clinica.backend.entity.AjustesClinica;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

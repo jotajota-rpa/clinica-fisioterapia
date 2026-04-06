@@ -1,4 +1,4 @@
-package com.jotajota.backend.config;
+package com.clinica.backend.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

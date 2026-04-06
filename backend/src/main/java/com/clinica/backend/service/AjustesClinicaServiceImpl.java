@@ -1,12 +1,10 @@
-package com.jotajota.backend.service;
+package com.clinica.backend.service;
 
-import com.jotajota.backend.dto.AjustesClinicaDto;
-import com.jotajota.backend.entity.AjustesClinica;
-import com.jotajota.backend.repository.IAjustesClinicaRepository;
+import com.clinica.backend.dto.AjustesClinicaDto;
+import com.clinica.backend.entity.AjustesClinica;
+import com.clinica.backend.repository.IAjustesClinicaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,4 +1,4 @@
-package com.jotajota.backend;
+package com.clinica.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

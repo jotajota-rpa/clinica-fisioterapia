@@ -1,4 +1,4 @@
-package com.jotajota.backend.entity;
+package com.clinica.backend.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
