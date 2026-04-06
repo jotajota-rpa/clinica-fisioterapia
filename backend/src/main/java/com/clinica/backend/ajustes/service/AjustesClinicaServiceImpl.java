@@ -1,8 +1,8 @@
-package com.clinica.backend.service;
+package com.clinica.backend.ajustes.service;
 
-import com.clinica.backend.dto.AjustesClinicaDto;
-import com.clinica.backend.entity.AjustesClinica;
-import com.clinica.backend.repository.IAjustesClinicaRepository;
+import com.clinica.backend.ajustes.dto.AjustesClinicaDto;
+import com.clinica.backend.ajustes.entity.AjustesClinica;
+import com.clinica.backend.ajustes.repository.IAjustesClinicaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

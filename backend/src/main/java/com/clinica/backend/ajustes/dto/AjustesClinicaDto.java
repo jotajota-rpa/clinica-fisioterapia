@@ -1,4 +1,4 @@
-package com.clinica.backend.dto;
+package com.clinica.backend.ajustes.dto;
 
 import lombok.Data;
 

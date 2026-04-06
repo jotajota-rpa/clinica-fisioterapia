@@ -1,4 +1,4 @@
-package com.clinica.backend.entity;
+package com.clinica.backend.ajustes.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

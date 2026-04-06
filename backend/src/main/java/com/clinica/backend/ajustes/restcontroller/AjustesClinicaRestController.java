@@ -1,8 +1,8 @@
-package com.clinica.backend.restcontroller;
+package com.clinica.backend.ajustes.restcontroller;
 
-import com.clinica.backend.dto.AjustesClinicaDto;
-import com.clinica.backend.entity.AjustesClinica;
-import com.clinica.backend.service.IAjustesClinicaService;
+import com.clinica.backend.ajustes.dto.AjustesClinicaDto;
+import com.clinica.backend.ajustes.entity.AjustesClinica;
+import com.clinica.backend.ajustes.service.IAjustesClinicaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
