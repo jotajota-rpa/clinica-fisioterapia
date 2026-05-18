@@ -10,48 +10,9 @@ services:
       - "5432:5432"
     command: postgres -c shared_buffers=64MB
     volumes:
-      - D:/Documentos/Proyectos/docker-data/data/pgdata:/var/lib/postgresql
+      - pgdata_nativo:/var/lib/postgresql/
     mem_limit: 512m
     cpus: 1
-
-  backend:
-    build: ./backend
-    container_name: spring_backend
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
-    working_dir: /app
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/clinica_fisio
-      - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=admin
-      - JWT_SECRET=${JWT_SECRET:-ClinicaFisio2026FullStackSpringReactSecurityKeySafeDevelopment!!}
-      - JWT_EXPIRATION=${JWT_EXPIRATION:-86400000}
-      - JWT_REFRESH_TOKEN_EXPIRATION=${JWT_REFRESH_TOKEN_EXPIRATION:-604800000}
-      - JAVA_OPTS=-Xms128m -Xmx256m
-    command: mvn spring-boot:run -Dspring-boot.run.fork=false
-    volumes:
-      - ./backend:/app
-      - maven-cache:/root/.m2
-    mem_limit: 512m
-    cpus: 2
-
-  frontend:
-    build: ./frontend
-    container_name: react_frontend
-    ports:
-      - "5173:5173"
-    command: npm run dev -- --host
-    volumes:
-      - ./frontend:/app:cached
-      - /app/node_modules
-    mem_limit: 512m
-    cpus: 1
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-      - NODE_ENV=development
-      - VITE_API_URL=http://localhost:8080/api
 
 volumes:
-  maven-cache:
+  pgdata_nativo:
