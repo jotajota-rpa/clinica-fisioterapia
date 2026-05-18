@@ -43,6 +43,9 @@ public class AjustesClinicaServiceImpl implements IAjustesClinicaService{
 
         return repository.save(ajustes);
     }
+    public String datos(){
+        return "";
+    }
 
     @Override
     public String guardarLogoEnDisco(MultipartFile archivo) throws IOException {
